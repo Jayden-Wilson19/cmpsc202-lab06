@@ -36,6 +36,8 @@ Rather than using recursion, we can build up a solution iteratively. This is kno
 
 **Task**: Compare the performance of the three approaches (naive recursive, memoized, and bottom-up) on a collection of amounts for a given set of coins. Measure the time taken for each approach and report your findings either in a table or a plot. Then, write up a brief summary of the setup and your findings in a markdown file called `empirical_comparison.md`, which includes your plot or table. This write-up should contain no more than a paragraph or two of text.
 
+Each performance outputted the information really quickly despite the modifications made to it. During the memoized performance, my output mostly shown none with some information being shown. Overall, all three shown its elapsed time it took to display the information alongside the numbers for the final result.
+
 ## Phase 5: Submission
 
 Your submission should include:
