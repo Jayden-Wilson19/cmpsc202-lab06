@@ -1,0 +1,26 @@
+from functools import lru_cache
+
+def coin_change_recursive(coins, amount):
+    """Return the fewest coins needed to make 'amount' , or -1 if impossible."""
+    coins = tuple(coins)
+
+    @lru_cache(maxsize=None)
+    def solve(remaining):
+        if remaining == 0:
+            return 0
+        if remaining < 0:
+            return float("inf")
+        best = min(solve(remaining - c) for c in coins)
+        return best + 1
+
+    result = solve(amount)
+    return -1 if result == float("inf") else result
+
+if __name__ == "__main__":
+    import time
+
+    start = time.perf_counter()
+    print(coin_change_recursive([1, 2, 5], 11))
+    print(coin_change_recursive([2], 3))
+    print(coin_change_recursive([1], 0))
+    print(f"Elapsed: {time.perf_counter() - start:.6f}s")
