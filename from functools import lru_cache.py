@@ -1,26 +1,39 @@
+
 from functools import lru_cache
 
-def coin_change_recursive(coins, amount):
+
+def coin_change_memorized(coins, amount, memo=None):
     """Return the fewest coins needed to make 'amount' , or -1 if impossible."""
-    coins = tuple(coins)
+    if memo is None:
+        memo = {}
 
-    @lru_cache(maxsize=None)
-    def solve(remaining):
-        if remaining == 0:
+        if amount == 0:
             return 0
-        if remaining < 0:
-            return float("inf")
-        best = min(solve(remaining - c) for c in coins)
-        return best + 1
+        if amount < 0:
+            return -1
 
-    result = solve(amount)
-    return -1 if result == float("inf") else result
+        if amount in memo:
+            return memo[amount]
+
+        best = float("inf")
+        for coin in coins:
+            sub = coin_change_memorized(coins, amount - coin, memo)
+            if sub != -1:
+                best = min(best, sub + 1)
+
+        memo[amount] = -1 if best == float("inf") else best
+        return memo[amount]
+    
 
 if __name__ == "__main__":
     import time
 
     start = time.perf_counter()
-    print(coin_change_recursive([1, 2, 5], 11))
-    print(coin_change_recursive([2], 3))
-    print(coin_change_recursive([1], 0))
+    print(coin_change_memorized([1, 2, 5], 11, {}))
+    print(coin_change_memorized([2], 3, {}))
+    print(coin_change_memorized([1], 0,))
+
+    shared = {}
+    print(coin_change_memorized([1, 2, 5], 11, shared))
+    print(coin_change_memorized([1, 2, 5], 7, shared))
     print(f"Elapsed: {time.perf_counter() - start:.6f}s")
